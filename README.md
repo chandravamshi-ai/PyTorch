@@ -73,7 +73,7 @@ By following this roadmap and utilizing these resources, you'll systematically b
   -->
 
 
-### Core Concepts inPyTorch
+### Core Concepts in PyTorch
 
 **1. Tensors**
 - **Definition:** Understand what tensors are and how they are used in PyTorch.
