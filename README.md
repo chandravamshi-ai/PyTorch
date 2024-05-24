@@ -1,4 +1,4 @@
-# Pytorch
+# PyTorch
 
 **1. Introduction to PyTorch**
 - **Set Up Your Environment:**
