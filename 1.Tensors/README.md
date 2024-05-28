@@ -2,7 +2,7 @@
 
 ## PyTorch Tensors: A Beginner's Guide
 
-**Introduction
+**Introduction**
 
 Welcome to the beginner's guide on PyTorch tensors! Tensors are the fundamental building blocks in PyTorch, and understanding them is crucial for any deep learning project. This guide will take you through the basics of tensors, including their creation, manipulation, and various operations. Let's dive in!
 
