@@ -31,45 +31,45 @@ A tensor is a generalization of scalars, vectors, matrices, and higher-dimension
 
 1. **Data Structure and Operations**
 
-- **Arrays (e.g., NumPy Arrays):**
-  - Arrays are data structures provided by libraries like NumPy.
-  - They support a wide range of mathematical and statistical operations.
-  - Designed primarily for CPU computations.
+  - **Arrays (e.g., NumPy Arrays):**
+    - Arrays are data structures provided by libraries like NumPy.
+    - They support a wide range of mathematical and statistical operations.
+    - Designed primarily for CPU computations.
 
-- **Tensors:**
-  - Tensors are similar to arrays but come with additional capabilities.
-  - They support all array operations and more, such as automatic differentiation.
-  - Designed for both CPU and GPU computations.
+  - **Tensors:**
+    - Tensors are similar to arrays but come with additional capabilities.
+    - They support all array operations and more, such as automatic differentiation.
+    - Designed for both CPU and GPU computations.
 
 2. **Automatic Differentiation**
 
-- **Arrays:**
-  - Arrays do not inherently support automatic differentiation.
-  - Separate libraries (like `autograd` or manual implementation) are required to compute gradients.
-
-- **Tensors:**
-  - Tensors in PyTorch have built-in support for automatic differentiation using `autograd`.
-  - This is crucial for training neural networks, where gradients of loss functions with respect to model parameters are computed automatically.
+  - **Arrays:**
+    - Arrays do not inherently support automatic differentiation.
+    - Separate libraries (like `autograd` or manual implementation) are required to compute gradients.
+  
+  - **Tensors:**
+    - Tensors in PyTorch have built-in support for automatic differentiation using `autograd`.
+    - This is crucial for training neural networks, where gradients of loss functions with respect to model parameters are computed automatically.
 
 3. **GPU Acceleration**
 
-- **Arrays:**
-  - Arrays typically operate on the CPU.
-  - For GPU support, additional libraries like CuPy are needed.
-
-- **Tensors:**
-  - Tensors can seamlessly move between CPU and GPU.
-  - This is managed by PyTorch’s APIs, making it easy to accelerate computations without extensive code changes.
+  - **Arrays:**
+    - Arrays typically operate on the CPU.
+    - For GPU support, additional libraries like CuPy are needed.
+  
+  - **Tensors:**
+    - Tensors can seamlessly move between CPU and GPU.
+    - This is managed by PyTorch’s APIs, making it easy to accelerate computations without extensive code changes.
 
 4. **Framework Integration**
 
-- **Arrays:**
-  - Arrays are general-purpose and widely used across various domains.
-  - Integration with deep learning frameworks requires conversion or additional steps.
-
-- **Tensors:**
-  - Tensors are designed for deep learning and integrate seamlessly with PyTorch models.
-  - They facilitate end-to-end workflows from data processing to model deployment.
+  - **Arrays:**
+    - Arrays are general-purpose and widely used across various domains.
+    - Integration with deep learning frameworks requires conversion or additional steps.
+  
+  - **Tensors:**
+    - Tensors are designed for deep learning and integrate seamlessly with PyTorch models.
+    - They facilitate end-to-end workflows from data processing to model deployment.
 
 
 ### Advantages of Using Tensors
