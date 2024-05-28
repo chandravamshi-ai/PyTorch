@@ -110,7 +110,7 @@ matmul_result = torch.matmul(matrix_a, matrix_b)
 transpose_result = torch.transpose(matrix_a, 0, 1)
 ```
 
-**Tensor Manipulation**
+### Tensor Manipulation
 
 **Reshaping Tensors**
 
