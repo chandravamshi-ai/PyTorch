@@ -261,3 +261,164 @@ for batch in text_dataloader:
 Understanding and effectively using `Dataset` and `DataLoader` is crucial for managing data in PyTorch. These tools allow you to handle complex data pipelines, from loading and preprocessing to batching and shuffling, making your deep learning workflows more efficient and scalable. By mastering these concepts, you'll be well-equipped to tackle a wide range of machine learning tasks, from beginner projects to advanced applications.
 
 ---
+## Basic example from creating dataset and using PyTorch Dataset and DataLoaders to build NN model
+
+Let's walk through a complete example of creating a custom dataset, using DataLoader for efficient data handling, applying some basic preprocessing, and building a simple neural network model with PyTorch. We'll focus on the dataset and dataloaders, showcasing their advantages and functionalities.
+
+### Step-by-Step Workflow
+
+1. **Creating a Custom Dataset**
+2. **Using DataLoader**
+3. **Applying Transformations**
+4. **Building and Training a Model**
+
+### 1. Creating a Custom Dataset
+
+First, we will create a custom dataset. For this example, let's assume we are working with a simple dataset of 2D points and their labels, which represent a binary classification problem (e.g., class 0 or class 1).
+
+```python
+import torch
+from torch.utils.data import Dataset, DataLoader
+
+class SimpleDataset(Dataset):
+    def __init__(self, data, labels, transform=None):
+        self.data = data
+        self.labels = labels
+        self.transform = transform
+
+    def __len__(self):
+        return len(self.data)
+
+    def __getitem__(self, idx):
+        sample = self.data[idx]
+        label = self.labels[idx]
+
+        if self.transform:
+            sample = self.transform(sample)
+
+        return sample, label
+
+# Create sample data
+data = torch.tensor([
+    [1.0, 2.0], [2.0, 3.0], [3.0, 1.0], [4.0, 5.0], [5.0, 4.0],
+    [6.0, 6.0], [7.0, 8.0], [8.0, 7.0], [9.0, 9.0], [10.0, 10.0]
+])
+labels = torch.tensor([0, 0, 1, 1, 0, 0, 1, 1, 0, 1])
+
+# Instantiate the dataset
+dataset = SimpleDataset(data, labels)
+```
+
+### 2. Using DataLoader
+
+Next, we'll use `DataLoader` to handle batching, shuffling, and parallel data loading.
+
+```python
+# Create DataLoader
+dataloader = DataLoader(dataset, batch_size=2, shuffle=True, num_workers=2)
+
+# Iterate through DataLoader
+for batch in dataloader:
+    data, labels = batch
+    print('Batch data:', data)
+    print('Batch labels:', labels)
+```
+
+### 3. Applying Transformations
+
+We can apply transformations to preprocess our data. For simplicity, let's normalize the data.
+
+```python
+from torchvision import transforms
+
+# Define a simple transformation
+class Normalize:
+    def __call__(self, sample):
+        return (sample - torch.mean(sample)) / torch.std(sample)
+
+# Add the transformation to the dataset
+transform = transforms.Compose([Normalize()])
+dataset = SimpleDataset(data, labels, transform=transform)
+dataloader = DataLoader(dataset, batch_size=2, shuffle=True, num_workers=2)
+
+# Check transformed data
+for batch in dataloader:
+    data, labels = batch
+    print('Transformed data:', data)
+    print('Labels:', labels)
+```
+
+### 4. Building and Training a Model
+
+Now, let's build a simple neural network model and train it using the DataLoader.
+
+```python
+import torch.nn as nn
+import torch.optim as optim
+
+# Define a simple neural network
+class SimpleNN(nn.Module):
+    def __init__(self):
+        super(SimpleNN, self).__init__()
+        self.fc1 = nn.Linear(2, 4)
+        self.fc2 = nn.Linear(4, 2)
+        self.fc3 = nn.Linear(2, 1)
+        self.sigmoid = nn.Sigmoid()
+
+    def forward(self, x):
+        x = torch.relu(self.fc1(x))
+        x = torch.relu(self.fc2(x))
+        x = self.fc3(x)
+        x = self.sigmoid(x)
+        return x
+
+# Instantiate the model, define loss function and optimizer
+model = SimpleNN()
+criterion = nn.BCELoss()
+optimizer = optim.SGD(model.parameters(), lr=0.01)
+
+# Training loop
+num_epochs = 20
+
+for epoch in range(num_epochs):
+    for batch in dataloader:
+        data, labels = batch
+        labels = labels.float().unsqueeze(1)  # BCELoss expects (N, 1) shape
+
+        # Forward pass
+        outputs = model(data)
+        loss = criterion(outputs, labels)
+
+        # Backward pass and optimization
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+
+    print(f'Epoch [{epoch+1}/{num_epochs}], Loss: {loss.item():.4f}')
+
+print('Training complete')
+```
+
+### Explanation and Advantages
+
+#### Custom Dataset
+
+- **Flexibility:** Custom datasets allow you to define exactly how data is loaded and preprocessed.
+- **Reusability:** Once defined, the dataset can be reused across different projects.
+
+#### DataLoader
+
+- **Batching:** Efficiently handles batching, reducing the overhead of manually batching data.
+- **Shuffling:** Helps improve model training by shuffling data, ensuring that batches are not always the same.
+- **Parallel Loading:** Utilizes multiple worker processes to load data in parallel, significantly speeding up the data loading process.
+
+#### Transformations
+
+- **Preprocessing:** Simplifies the process of applying complex data transformations and augmentations.
+- **Composability:** Allows chaining multiple transformations together, making it easy to build complex preprocessing pipelines.
+
+#### Conclusion
+
+This complete example demonstrates the power and flexibility of PyTorch's `Dataset` and `DataLoader` classes. By leveraging these tools, you can efficiently manage data loading and preprocessing, which is crucial for training machine learning models. The ability to handle large datasets, apply complex transformations, and use parallel loading makes PyTorch an excellent choice for data scientists and machine learning practitioners.
+
+---
