@@ -333,3 +333,130 @@ Saving only the model parameters (state dict) is useful when:
 - **Checkpoints**: Best for resuming training with all relevant training information. Includes optimizer state, loss, and epoch information.
 
 For most use cases, especially if you are finished training and do not need to resume training later, saving the entire model is a good choice for simplicity. If you plan to modify the architecture or share the model with others, saving the model parameters (state dict) is more flexible. Use checkpoints if you need to save the complete training state for resuming training.
+
+---
+
+### Imagine we have 5 epochs and we saved a checkpoint after each epoch. If we stopped after completing 3 epochs and later decided to resume training from the 4th epoch to finish the remaining epochs, can you explain what to do in this case?
+
+If you have saved checkpoints for each epoch and want to resume training from the 4th epoch after completing the first 3 epochs, here’s how you can do it.
+
+### Scenario
+
+- You have completed 3 epochs and saved checkpoints at the end of each epoch.
+- You want to resume training from the 4th epoch and complete the remaining epochs.
+
+### Step-by-Step Guide
+
+1. **Save Checkpoints During Training**: Ensure you save checkpoints after each epoch during training.
+2. **Load the Checkpoint**: Load the model, optimizer, and other necessary states from the checkpoint saved after the 3rd epoch.
+3. **Resume Training**: Continue training from the 4th epoch using the loaded states.
+
+### Saving Checkpoints During Training
+
+Here’s how you can save checkpoints at the end of each epoch:
+
+```python
+import torch
+import torch.nn as nn
+import torch.optim as optim
+
+# Define the model
+class SimpleNN(nn.Module):
+    def __init__(self):
+        super(SimpleNN, self).__init__()
+        self.fc1 = nn.Linear(3, 10)
+        self.fc2 = nn.Linear(10, 2)
+
+    def forward(self, x):
+        x = torch.relu(self.fc1(x))
+        x = self.fc2(x)
+        return x
+
+# Initialize the model, loss function, and optimizer
+model = SimpleNN()
+criterion = nn.CrossEntropyLoss()
+optimizer = optim.SGD(model.parameters(), lr=0.001)
+
+# Dummy dataset
+data = torch.randn(100, 3)
+labels = torch.randint(0, 2, (100,))
+num_epochs = 5
+
+# Training loop with checkpoint saving
+for epoch in range(num_epochs):
+    optimizer.zero_grad()
+    outputs = model(data)
+    loss = criterion(outputs, labels)
+    loss.backward()
+    optimizer.step()
+
+    # Save checkpoint
+    checkpoint = {
+        'epoch': epoch,
+        'model_state_dict': model.state_dict(),
+        'optimizer_state_dict': optimizer.state_dict(),
+        'loss': loss,
+    }
+    torch.save(checkpoint, f'checkpoint_epoch_{epoch}.pth')
+    print(f'Saved checkpoint for epoch {epoch}')
+```
+
+### Loading Checkpoint and Resuming Training
+
+To resume training from the 4th epoch:
+
+1. **Load the checkpoint saved after the 3rd epoch**.
+2. **Continue training from the 4th epoch**.
+
+```python
+# Create model and optimizer instances
+model = SimpleNN()
+optimizer = optim.SGD(model.parameters(), lr=0.001)
+
+# Load the checkpoint from the 3rd epoch
+checkpoint = torch.load('checkpoint_epoch_3.pth')
+model.load_state_dict(checkpoint['model_state_dict'])
+optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+start_epoch = checkpoint['epoch'] + 1
+loss = checkpoint['loss']
+
+print(f'Resuming training from epoch {start_epoch} with loss {loss.item()}')
+
+# Set the model to training mode
+model.train()
+
+# Continue training from the 4th epoch
+for epoch in range(start_epoch, num_epochs):
+    optimizer.zero_grad()
+    outputs = model(data)
+    loss = criterion(outputs, labels)
+    loss.backward()
+    optimizer.step()
+
+    # Save checkpoint
+    checkpoint = {
+        'epoch': epoch,
+        'model_state_dict': model.state_dict(),
+        'optimizer_state_dict': optimizer.state_dict(),
+        'loss': loss,
+    }
+    torch.save(checkpoint, f'checkpoint_epoch_{epoch}.pth')
+    print(f'Saved checkpoint for epoch {epoch}')
+```
+
+### Explanation
+
+1. **Save Checkpoints**: During the initial training, you save the model state, optimizer state, epoch, and loss at the end of each epoch.
+2. **Load Checkpoint**: When you decide to resume training, you load the checkpoint from the last completed epoch. This includes:
+   - Model parameters (`model_state_dict`).
+   - Optimizer state (`optimizer_state_dict`).
+   - The epoch at which training was paused.
+   - The loss at the time of saving the checkpoint.
+3. **Resume Training**: Start training from the next epoch after the loaded epoch (`start_epoch = checkpoint['epoch'] + 1`).
+
+### Summary
+
+- **Checkpoints**: Save checkpoints at the end of each epoch to ensure you can resume training from any point.
+- **Load and Resume**: Load the checkpoint corresponding to the last completed epoch, then continue training from the next epoch.
+
+By following these steps, you can effectively pause and resume training at any point, ensuring that your training process is robust and can recover from interruptions.
