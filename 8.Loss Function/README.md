@@ -24,8 +24,8 @@ Different types of loss functions are used depending on the type of problem:
 
 - **Mean Squared Error (MSE)**: This is used for regression tasks, where the output is a continuous value. It measures the average squared difference between the predicted values and the actual values.
   $$\text{MSE} = \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2 \$$
-
-  where $$\ y_i  \$$  are the actual values and $$\ \hat{y}_i \$$ are the predicted values.
+  
+  where $\( y_i \)$  are the actual values and $\( \hat{y}_i \)$ are the predicted values.
 
 #### Classification Loss Functions
 
