@@ -30,10 +30,8 @@ Different types of loss functions are used depending on the type of problem:
 #### Classification Loss Functions
 
 - **Cross-Entropy Loss**: This is commonly used for classification tasks. It measures the difference between the predicted probability distribution and the actual distribution (typically a one-hot encoded vector).
-  \[
-  \text{Cross-Entropy} = -\sum_{i=1}^{n} \left( y_i \log(\hat{y}_i) + (1 - y_i) \log(1 - \hat{y}_i) \right)
-  \]
-  where \( y_i \) is the actual class (0 or 1) and \( \hat{y}_i \) is the predicted probability of the class.
+  $$\text{Cross-Entropy} = \sum_{i=1}^{n} \left( y_i \log(\hat{y}_i) + (1 - y_i) \log(1 - \hat{y}_i) \right)\$$
+  where $\( y_i \)$ is the actual class (0 or 1) and $\( \hat{y}_i \)$ is the predicted probability of the class.
 
 ### 3. How Loss is Computed
 
@@ -47,29 +45,31 @@ To minimize the loss, neural networks use optimization algorithms like gradient 
 
 Let's consider a simple binary classification problem with the following predictions and actual values:
 
-- Predicted probabilities: \(\hat{y} = [0.8, 0.1, 0.6, 0.4]\)
-- Actual labels: \(y = [1, 0, 1, 0]\)
+- Predicted probabilities: $\(\hat{y} = [0.8, 0.1, 0.6, 0.4]\)$
+- Actual labels: $\(y = [1, 0, 1, 0]\)$
 
 Using Cross-Entropy Loss, the computation would be:
 
-\[
-\text{Cross-Entropy} = -\frac{1}{4} \sum_{i=1}^{4} \left( y_i \log(\hat{y}_i) + (1 - y_i) \log(1 - \hat{y}_i) \right)
-\]
+$$\text{Cross-Entropy} = -\frac{1}{4} \sum_{i=1}^{4} \left( y_i \log(\hat{y}_i) + (1 - y_i) \log(1 - \hat{y}_i) \right)\$$
 
 Calculating for each term:
 
-\[
-- (1 \cdot \log(0.8) + 0 \cdot \log(0.2)) = - \log(0.8)
-\]
-\[
-- (0 \cdot \log(0.1) + 1 \cdot \log(0.9)) = - \log(0.9)
-\]
-\[
-- (1 \cdot \log(0.6) + 0 \cdot \log(0.4)) = - \log(0.6)
-\]
-\[
-- (0 \cdot \log(0.4) + 1 \cdot \log(0.6)) = - \log(0.6)
-\]
+$$
+ (1 \cdot \log(0.8) + 0 \cdot \log(0.2)) = - \log(0.8)
+$$
+
+$$
+ (0 \cdot \log(0.1) + 1 \cdot \log(0.9)) = - \log(0.9)
+$$
+
+$$
+ (1 \cdot \log(0.6) + 0 \cdot \log(0.4)) = - \log(0.6)
+$$
+
+$$
+ (0 \cdot \log(0.4) + 1 \cdot \log(0.6)) = - \log(0.6)
+$$
+
 
 Summing these and dividing by the number of samples (4), we get the average loss.
 
