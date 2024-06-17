@@ -336,7 +336,7 @@ For most use cases, especially if you are finished training and do not need to r
 
 ---
 
-### Imagine we have 5 epochs and we saved a checkpoint after each epoch. If we stopped after completing 3 epochs and later decided to resume training from the 4th epoch to finish the remaining epochs, can you explain what to do in this case?
+### Imagine we have 5 epochs and we saved a checkpoint after each epoch. If we stopped after completing 3 epochs and later decided to resume training from the 4th epoch to finish the remaining epochs, How to resume from epoch 4?
 
 If you have saved checkpoints for each epoch and want to resume training from the 4th epoch after completing the first 3 epochs, here’s how you can do it.
 
